@@ -112,35 +112,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void updateUserData() {
-    String? uid = _auth.currentUser?.uid;
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    users.doc(uid).update({
-      'name': 'new name',
-      'lastName': 'new lastname',
-      'phoneNumber': 'new phone',
-      'dateOfBirth' : 'new date'
-    }).then((value) {
-      showAlert(
-        context: context,
-        type: AlertType.success,
-        title: 'Actualización exitosa',
-        desc: 'Los campos han sido actualizados exitosamente',
-        onPressed: () {
-          Navigator.pop(context);
-        }).show();
-    }).catchError((error) {
-      showAlert(
-        context: context,
-        type: AlertType.error,
-        title: 'Error',
-        desc: 'Error al actualizar los datos',
-        onPressed: () {
-          Navigator.pop(context);
-        }).show();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
