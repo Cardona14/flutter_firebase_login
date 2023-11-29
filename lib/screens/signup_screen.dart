@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -109,6 +110,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       },
     );
+  }
+
+  void updateUserData() {
+    String? uid = _auth.currentUser?.uid;
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    users.doc(uid).update({
+      'name': 'new name',
+      'lastName': 'new lastname',
+      'phoneNumber': 'new phone',
+      'dateOfBirth' : 'new date'
+    }).then((value) {
+      showAlert(
+        context: context,
+        type: AlertType.success,
+        title: 'Actualización exitosa',
+        desc: 'Los campos han sido actualizados exitosamente',
+        onPressed: () {
+          Navigator.pop(context);
+        }).show();
+    }).catchError((error) {
+      showAlert(
+        context: context,
+        type: AlertType.error,
+        title: 'Error',
+        desc: 'Error al actualizar los datos',
+        onPressed: () {
+          Navigator.pop(context);
+        }).show();
+    });
   }
 
   @override
@@ -285,6 +316,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     } catch (e) {
                                       showAlert(
                                         context: context,
+                                        type: AlertType.error,
                                         title: 'Ocurrió un error',
                                         desc: 'Ocurrió un error al subir la imagen, intentalo más tarde',
                                         onPressed: () {
@@ -322,6 +354,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context: context,
                                         title: 'Contraseña demisiado debil',
                                         desc: 'Tu contraseña debe tener más de 6 caracteres',
+                                        type: AlertType.info,
                                         onPressed: () {
                                           setState(() {_saving = false;});
                                           Navigator.pop(context);
@@ -331,6 +364,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context: context,
                                         title: 'Usuario ya existente',
                                         desc: 'El correo ingresado ya esta asociado a una cuenta existente',
+                                        type: AlertType.error,
                                         onPressed: () {
                                           setState(() {_saving = false;});
                                           Navigator.pop(context);
@@ -340,6 +374,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context: context,
                                         title: 'Correo no valido',
                                         desc: 'Revisa que tu correo sea valido',
+                                        type: AlertType.error,
                                         onPressed: () {
                                           setState(() {_saving = false;});
                                           Navigator.pop(context);
@@ -349,6 +384,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 } else {
                                   showAlert(
                                     context: context,
+                                    type: AlertType.warning,
                                     title: 'CONTRASEÑA ERRONEA',
                                     desc:'Asegurate que hayas escrito la misma contraseña',
                                     onPressed: () {
@@ -359,6 +395,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               } else {
                                 showAlert(
                                   context: context,
+                                  type: AlertType.info,
                                   title: 'Información faltante',
                                   desc: 'Debes llenar todos los campos para registrarte',
                                   onPressed: () {

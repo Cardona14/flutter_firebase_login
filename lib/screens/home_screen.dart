@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -150,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context: context,
                                       title: 'Error de autenticación',
                                       desc: 'Ocurrió un error al acceder con Google',
+                                      type: AlertType.error,
                                       onPressed: () {
                                         Navigator.pop(context);
                                       }).show();

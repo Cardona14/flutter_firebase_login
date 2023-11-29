@@ -1,6 +1,7 @@
 import 'package:final_project_pmsn2023/widgets/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -60,6 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 await FirebaseAuth.instance.signOut();
                 showAlert(
                   context: context,
+                  type: AlertType.none,
                   title: 'Sesión finalizada',
                   desc:'Vuelve pronto',
                   onPressed: () {
@@ -68,6 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               } catch (e) {
                 showAlert(
                   context: context,
+                  type: AlertType.error,
                   title: 'Algo salió mal',
                   desc:'Intenta cerrar sesión más tarde',
                   onPressed: () {

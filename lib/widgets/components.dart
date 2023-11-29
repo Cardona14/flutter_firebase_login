@@ -187,11 +187,12 @@ Alert showAlert({
   required Function onPressed,
   required String title,
   required String desc,
+  required AlertType type,
   required BuildContext context,
 }) {
   return Alert(
     context: context,
-    type: AlertType.error,
+    type: type,
     title: title,
     desc: desc,
     buttons: [
