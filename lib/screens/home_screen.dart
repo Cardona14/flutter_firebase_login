@@ -3,7 +3,7 @@
 import 'package:final_project_pmsn2023/widgets/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -88,41 +88,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Image.asset('assets/icons/facebook.png'),
                             ),
                             onPressed: () async {
-                              try {
-                                final LoginResult loginResult = await FacebookAuth.instance.login();
+                              // try {
+                              //   final LoginResult loginResult = await FacebookAuth.instance.login();
                                 
-                                if (loginResult.status == LoginStatus.success) {
-                                  final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
-                                  final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+                              //   if (loginResult.status == LoginStatus.success) {
+                              //     final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+                              //     final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
                                   
-                                  if (userCredential.user != null) {
-                                    Navigator.pushReplacementNamed(context, '/dash');
-                                  } else {
-                                    showAlert(
-                                      context: context,
-                                      title: 'Error de autenticación',
-                                      desc: 'Ocurrió un error al acceder con Facebook',
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ).show();
-                                  }
-                                }
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'invalid-credential') {
-                                  signUpAlert(
-                                    context: context,
-                                    onPressed: () {
-                                      Navigator.popAndPushNamed(context, '/welcome');
-                                    },
-                                    title: 'Error de autenticación',
-                                    desc: 'Ocurrió un error al acceder con Facebook',
-                                    btnText: 'Prueba Ahora',
-                                  ).show();
-                                } else {
-                                  print('Error al iniciar sesión con Facebook: $e');
-                                }
-                              }
+                              //     if (userCredential.user != null) {
+                              //       Navigator.pushReplacementNamed(context, '/dash');
+                              //     } else {
+                              //       showAlert(
+                              //         context: context,
+                              //         title: 'Error de autenticación',
+                              //         desc: 'Ocurrió un error al acceder con Facebook',
+                              //         onPressed: () {
+                              //           Navigator.pop(context);
+                              //         },
+                              //       ).show();
+                              //     }
+                              //   }
+                              // } on FirebaseAuthException catch (e) {
+                              //   if (e.code == 'invalid-credential') {
+                              //     signUpAlert(
+                              //       context: context,
+                              //       onPressed: () {
+                              //         Navigator.popAndPushNamed(context, '/welcome');
+                              //       },
+                              //       title: 'Error de autenticación',
+                              //       desc: 'Ocurrió un error al acceder con Facebook',
+                              //       btnText: 'Prueba Ahora',
+                              //     ).show();
+                              //   } else {
+                              //     print('Error al iniciar sesión con Facebook: $e');
+                              //   }
+                              // }
                             },
                           ),
                           IconButton(
@@ -165,8 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     desc: 'Ocurrió un error al acceder con Google',
                                     btnText: 'Prueba Ahora',
                                   ).show();
-                                } else {
-                                  print('Error al iniciar sesión con Google: $e');
                                 }
                               }
                             },
@@ -175,10 +173,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             icon: CircleAvatar(
                               radius: 25,
                               backgroundColor: Colors.transparent,
-                              child: Image.asset(
-                                  'assets/icons/github.png'),
+                              child: Image.asset('assets/icons/github.png'),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+
+                            },
                           ),
                         ],
                       )

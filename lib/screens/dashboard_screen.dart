@@ -40,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           UserAccountsDrawerHeader(
             currentAccountPicture: CircleAvatar(
-              backgroundImage: profilePhotoUrl != null ? NetworkImage(profilePhotoUrl) : const AssetImage('defaul_avatar.png') as ImageProvider,
+              backgroundImage: profilePhotoUrl != null ? NetworkImage(profilePhotoUrl) : const AssetImage('avatar.png') as ImageProvider,
             ),
             accountName: Text(accountName ?? 'Nombre del Usuario'),
             accountEmail: Text(accountEmail ?? 'Correo Electrónico'),

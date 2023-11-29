@@ -16,10 +16,12 @@ dependencies:
   concentric_transition: ^1.0.3
   loading_overlay: ^0.3.0
   rflutter_alert: ^2.0.7
+  image_picker: ^1.0.4
   firebase_core: ^2.23.0
   firebase_auth: ^4.14.1
+  cloud_firestore: ^4.13.3
+  firebase_storage: ^11.5.3
   google_sign_in: ^6.1.6
-  flutter_facebook_auth: ^6.0.3
   
 
 dev_dependencies:

@@ -18,18 +18,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      home: const HomeScreen(),
       routes: getRoutes()
     );
-    
-    /*return ScreenUtilInit(
-      builder: () => MaterialApp(
-        home: LoginPage(),
-        routes: getRoutes(),
-      ),
-      designSize: const Size(750, 1334),
-      allowFontScaling: true,
-    );*/
 
   }
 }
@@ -41,17 +32,17 @@ class onBoarding extends StatelessWidget {
     CardOnBoardData(
       title: "Invitation Management App", 
       subtitle: "Ahora eres parte de la comunidad lince",
-      image: AssetImage('assets/logo_lince.webp'), 
+      image: const AssetImage('assets/logo_lince.webp'), 
       backgroundColor: Colors.white, 
-      titleColor: Color.fromARGB(255, 17, 117, 51), 
+      titleColor: const Color.fromARGB(255, 17, 117, 51), 
       subtitleColor: Colors.black,
       background: LottieBuilder.asset('assets/bg.json')
     ),
     CardOnBoardData(
       title: "Problematica", 
       subtitle: "AEISC es la asociación estudiantil de tu carrera",
-      image: AssetImage('assets/aeisc.png'), 
-      backgroundColor: Color.fromARGB(255, 17, 117, 51), 
+      image: const AssetImage('assets/aeisc.png'), 
+      backgroundColor: const Color.fromARGB(255, 17, 117, 51), 
       titleColor:  Colors.white,
       subtitleColor: Colors.black,
       background: LottieBuilder.asset('assets/circuito2.json')
@@ -59,9 +50,9 @@ class onBoarding extends StatelessWidget {
     CardOnBoardData(
       title: "Objetivo General", 
       subtitle: "En estos espacios disfrutarás de tu vida universitaria y aprenderás junto a tus compañeros",
-      image: AssetImage('assets/campus2.jpg'), 
+      image: const AssetImage('assets/campus2.jpg'), 
       backgroundColor: Colors.white, 
-      titleColor: Color.fromARGB(255, 27, 57, 106), 
+      titleColor: const Color.fromARGB(255, 27, 57, 106), 
       subtitleColor: Colors.black,
       background: LottieBuilder.asset('assets/circuito1.json')
     ),
