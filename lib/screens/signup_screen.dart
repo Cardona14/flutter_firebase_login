@@ -275,7 +275,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 if (_confirmPass == _password) {
                                   try {
                                     //Se crea el usuario en Firebase Auth
-                                    await _auth.createUserWithEmailAndPassword(email: _email, password: _password);
+                                    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: _email, password: _password);
+                                    //Se envia un correo de verificación
+                                    await userCredential.user!.sendEmailVerification();
                                     //Se obtiene el ID unico de usuario
                                     String? uid = _auth.currentUser?.uid;
                                     //Se sube la imagen a Firebase Storage

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project_pmsn2023/widgets/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,51 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  String accountName = 'Nombre del Usuario';
+  String accountEmail = 'Correo Electrónico';
+  String profilePhotoUrl = 'URL de la foto de perfil';
+
+  Future<void> fetchUserData() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      if (user.providerData.any((userInfo) => userInfo.providerId == 'password')) {
+        try {
+          final DocumentSnapshot<Map<String, dynamic>> userData =
+              await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+          if (userData.exists) {
+            final String name = userData['name'];
+            final String lastName = userData['lastName'];
+            final String email = user.email ?? '';
+            final String photoURL = userData['photoURL'];
+
+            setState(() {
+              accountName = '$name $lastName';
+              accountEmail = email;
+              profilePhotoUrl = photoURL;
+            });
+            print(profilePhotoUrl);
+          }
+        } catch (e) {
+          print('Error al obtener los datos desde Firestore: $e');
+        }
+      } else {
+        // No es un registro con correo y contraseña
+        setState(() {
+          accountName = user.displayName ?? 'Nombre del Usuario';
+          accountEmail = user.email ?? 'Correo Electrónico';
+          profilePhotoUrl = user.photoURL ?? 'email@example.com';
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +69,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget createDrawer(context){
-    User? user = FirebaseAuth.instance.currentUser;
-    String? accountName = 'Nombre del Usuario';
-    String? accountEmail = 'Correo Electrónico';
-    String? profilePhotoUrl = 'URL de la foto de perfil';
-
-    if (user != null) {
-      for (final providerProfile in user.providerData) {
-        accountName = providerProfile.displayName;
-        accountEmail = providerProfile.email;
-        profilePhotoUrl = providerProfile.photoURL;
-      }
-    }
-
     return Drawer(
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
             currentAccountPicture: CircleAvatar(
-              backgroundImage: profilePhotoUrl != null ? NetworkImage(profilePhotoUrl) : const AssetImage('avatar.png') as ImageProvider,
+              backgroundImage: profilePhotoUrl.isNotEmpty ? NetworkImage(profilePhotoUrl) : const AssetImage('assets/avatar.png') as ImageProvider,
             ),
-            accountName: Text(accountName ?? 'Nombre del Usuario'),
-            accountEmail: Text(accountEmail ?? 'Correo Electrónico'),
+            accountName: Text(accountName),
+            accountEmail: Text(accountEmail),
           ),
           ListTile(
             leading: const Icon(Icons.task_alt_outlined),

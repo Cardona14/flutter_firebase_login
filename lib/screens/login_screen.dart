@@ -5,6 +5,7 @@ import 'package:final_project_pmsn2023/widgets/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -76,12 +77,25 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             try {
                               await _auth.signInWithEmailAndPassword(email: _email, password: _password);
-                              if (context.mounted) {
+                              if (context.mounted && _auth.currentUser!.emailVerified) {
                                 setState(() {
                                   _saving = false;
                                   Navigator.popAndPushNamed(context, '/login');
                                 });
                                 Navigator.pushNamed(context, '/dash');
+                              } else if (!_auth.currentUser!.emailVerified){
+                                signUpAlert(
+                                  context: context,
+                                  onPressed: () {
+                                    setState(() {
+                                      _saving = false;
+                                    });
+                                    Navigator.popAndPushNamed(context, '/login');
+                                  },
+                                  title: 'Correo no verificado',
+                                  desc: 'Revisa tu correo e ingresa al link para verificarlo',
+                                  btnText: 'Reintentar',
+                                ).show();
                               }
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
@@ -91,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     setState(() {
                                       _saving = false;
                                     });
-                                    Navigator.popAndPushNamed(context, '/welcome');
+                                    Navigator.popAndPushNamed(context, '/home');
                                   },
                                   title: 'Usuario no encontrado',
                                   desc: 'Al parecer aún no tienes una cuenta registrada a este correo',

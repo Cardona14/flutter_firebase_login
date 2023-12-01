@@ -1,10 +1,12 @@
 import 'package:concentric_transition/concentric_transition.dart';
+import 'package:final_project_pmsn2023/provider/provider.dart';
 import 'package:final_project_pmsn2023/routes.dart';
 import 'package:final_project_pmsn2023/screens/home_screen.dart';
 import 'package:final_project_pmsn2023/widgets/onboard_card_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +19,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const HomeScreen(),
-      routes: getRoutes()
+    return ChangeNotifierProvider(
+      create: (context) => LogProvider(),
+      child: MaterialApp(
+        home: const HomeScreen(),
+        routes: getRoutes()
+      )
     );
-
   }
 }
 
