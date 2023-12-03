@@ -1,7 +1,63 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project_pmsn2023/widgets/components.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String? accountName = 'Nombre del Usuario';
+  String? accountEmail = 'Correo Electrónico';
+  String? profilePhotoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  Future<void> getUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      if (user.providerData.any((userInfo) => userInfo.providerId == 'password')) {
+        try {
+          final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      
+          if (userDoc.exists) {
+            setState(() {
+              accountName = '${userDoc['name']} ${userDoc['lastName']}'; // Concatena nombre y apellido
+              accountEmail = user.email;
+              profilePhotoUrl = user.photoURL;
+            });
+          }
+        } catch (e) {
+          // ignore: use_build_context_synchronously
+          showAlert(
+            context: context,
+            title: 'Error de autenticación',
+            desc: '$e',
+            type: AlertType.error,
+            onPressed: () {
+              Navigator.pop(context);
+            }).show();
+        }
+      } else {
+        setState(() {
+          accountName = user.displayName ?? 'Nombre del Usuario';
+          accountEmail = user.email ?? 'Correo Electrónico';
+          profilePhotoUrl = user.photoURL ?? 'email@example.com';
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +72,18 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Richie Lorie",
+                    accountName ?? 'Nombre del Usuario',
                     style: Theme.of(context)
                         .textTheme
-                        .headline6
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    accountEmail ?? 'Correo Electrónico',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
@@ -112,9 +176,14 @@ class ProfileInfoItem {
   const ProfileInfoItem(this.title, this.value);
 }
 
-class _TopPortion extends StatelessWidget {
+class _TopPortion extends StatefulWidget {
   const _TopPortion({Key? key}) : super(key: key);
 
+  @override
+  State<_TopPortion> createState() => _TopPortionState();
+}
+
+class _TopPortionState extends State<_TopPortion> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -146,8 +215,8 @@ class _TopPortion extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')),
+                        image: const AssetImage('assets/avatar.png')
+                    ),
                   ),
                 ),
                 Positioned(

@@ -22,8 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (user != null) {
       if (user.providerData.any((userInfo) => userInfo.providerId == 'password')) {
         try {
-          final DocumentSnapshot<Map<String, dynamic>> userData =
-              await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+          final DocumentSnapshot<Map<String, dynamic>> userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
 
           if (userData.exists) {
             final String name = userData['name'];

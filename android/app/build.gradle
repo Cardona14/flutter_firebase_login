@@ -72,6 +72,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    implementation 'com.google.android.gms:play-services-tasks:17.0.1'
+    implementation 'com.google.firebase:firebase-firestore:24.9.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
