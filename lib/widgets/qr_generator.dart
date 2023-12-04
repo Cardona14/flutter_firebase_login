@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 //import 'dart:ui';
-import 'package:flutter/rendering.dart';
 
 class GenerateQR extends StatefulWidget {
   final String id;
-  GenerateQR({required this.id});
+  GenerateQR({super.key, required this.id});
 
   @override
   State<StatefulWidget> createState() => GenerateQRState(id: id);

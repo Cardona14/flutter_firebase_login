@@ -37,13 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       
           if (userDoc.exists) {
             setState(() {
-              accountName = '${userDoc['name']} ${userDoc['lastName']}'; // Concatena nombre y apellido
+              accountName = '${userDoc['name']} ${userDoc['lastName']}';
               accountEmail = user.email;
-              profilePhotoUrl = user.photoURL;
+              profilePhotoUrl = userDoc['photoURL'];
             });
           }
         } catch (e) {
-          // ignore: use_build_context_synchronously
           showAlert(
             context: context,
             title: 'Error de autenticación',
@@ -63,13 +62,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          const Expanded(flex: 2, child: _TopPortion()),
+          Expanded(flex: 2, child: _TopPortion(profilePhotoUrl: profilePhotoUrl)),
           Expanded(
             flex: 3,
             child: Padding(
@@ -98,8 +96,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       FloatingActionButton.extended(
                         heroTag: 'onboarding',
                         elevation: 0,
-                        label: const Text("Ondoarding"),
-                        icon: const Icon(Icons.person_add_alt_1),
+                        label: const Text("Onboarding"),
+                        icon: const Icon(Icons.article_rounded),
                         onPressed: () {
                           //pendiente
                           onBoarding();
@@ -206,7 +204,8 @@ class ProfileInfoItem {
 }
 
 class _TopPortion extends StatefulWidget {
-  const _TopPortion({Key? key}) : super(key: key);
+  final String? profilePhotoUrl;
+  _TopPortion({Key? key, this.profilePhotoUrl}) : super(key: key);
 
   @override
   State<_TopPortion> createState() => _TopPortionState();
@@ -239,12 +238,12 @@ class _TopPortionState extends State<_TopPortion> {
               fit: StackFit.expand,
               children: [
                 Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.black,
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: const AssetImage('assets/avatar.png')
+                        image: (widget.profilePhotoUrl != null && widget.profilePhotoUrl!.isNotEmpty) ? NetworkImage(widget.profilePhotoUrl!) : const AssetImage('assets/avatar.png') as ImageProvider,
                     ),
                   ),
                 ),
@@ -314,7 +313,7 @@ class onBoarding extends StatelessWidget {
             return CardOnBoard(data: data[index]);
           } ,
           onFinish: (){
-            Navigator.pushNamed(context, '/perfil');
+            Navigator.pushNamed(context, '/dash');
           },
         )
     );

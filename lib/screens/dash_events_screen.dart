@@ -1,7 +1,11 @@
+import 'package:final_project_pmsn2023/screens/details_events_screen.dart';
 import 'package:final_project_pmsn2023/screens/new_invitation_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class HomeDash extends StatelessWidget {
+  String qrString = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +18,7 @@ class HomeDash extends StatelessWidget {
                 header,
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                     child: GridView.count(
                       crossAxisSpacing: 30,
                       mainAxisSpacing: 16,
@@ -26,10 +30,10 @@ class HomeDash extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const InvitationScreen()),
+                                  builder: (context) => InvitationScreen()),
                             );
                           },
-                          heroTag: 'configuración',
+                          heroTag: 'new_event',
                           elevation: 10,
                           backgroundColor: Colors.white,
                           label: const Column(
@@ -52,7 +56,26 @@ class HomeDash extends StatelessWidget {
                           ),
                         ),
                         FloatingActionButton.extended(
-                          onPressed: () {},
+                          onPressed: () async {
+                            var res = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SimpleBarcodeScannerPage(),
+                                ));
+
+                            if (res is String) {
+                              qrString = res;
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailsEventScreen(id: qrString),
+                                ),
+                              );
+                            }
+                          },
                           elevation: 10,
                           backgroundColor: Colors.white,
                           label: const Column(
@@ -89,7 +112,7 @@ class HomeDash extends StatelessWidget {
   get dashBg => Column(
         children: <Widget>[
           Expanded(
-            child: Container(color: const Color.fromRGBO(0, 67, 186, 1)),
+            child: Container(color: Color.fromRGBO(0, 67, 186, 1)),
             flex: 2,
           ),
           Expanded(
@@ -99,7 +122,7 @@ class HomeDash extends StatelessWidget {
         ],
       );
 
-  get header => const ListTile(
+  get header => ListTile(
         contentPadding: EdgeInsets.only(left: 20, right: 20, top: 20),
       );
 }
