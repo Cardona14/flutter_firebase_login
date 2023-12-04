@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:concentric_transition/concentric_transition.dart';
 import 'package:final_project_pmsn2023/widgets/components.dart';
+import 'package:final_project_pmsn2023/widgets/onboard_card_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -91,20 +96,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'follow',
+                        heroTag: 'onboarding',
                         elevation: 0,
-                        label: const Text("Follow"),
+                        label: const Text("Ondoarding"),
                         icon: const Icon(Icons.person_add_alt_1),
+                        onPressed: () {
+                          //pendiente
+                          onBoarding();
+                        },
                       ),
                       const SizedBox(width: 16.0),
                       FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'mesage',
+                        heroTag: 'cerrar sesión',
                         elevation: 0,
                         backgroundColor: Colors.red,
-                        label: const Text("Message"),
-                        icon: const Icon(Icons.message_rounded),
+                        label: const Text("Cerrar sesión"),
+                        icon: const Icon(Icons.logout_rounded),
+                        onPressed: () async {
+                          try {
+                            await FirebaseAuth.instance.signOut();
+                            showAlert(
+                              context: context,
+                              type: AlertType.none,
+                              title: 'Sesión finalizada',
+                              desc:'Vuelve pronto',
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(context, '/home');
+                              }).show();
+                          } catch (e) {
+                            showAlert(
+                              context: context,
+                              type: AlertType.error,
+                              title: 'Algo salió mal',
+                              desc:'Intenta cerrar sesión más tarde',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              }).show();
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -237,6 +266,57 @@ class _TopPortionState extends State<_TopPortion> {
           ),
         )
       ],
+    );
+  }
+}
+
+class onBoarding extends StatelessWidget {
+  onBoarding({super.key});
+
+  final  data=[
+    CardOnBoardData(
+      title: "Invitation Management App", 
+      subtitle: "Ahora eres parte de la comunidad lince",
+      image: const AssetImage('assets/logo_lince.webp'), 
+      backgroundColor: Colors.white, 
+      titleColor: const Color.fromARGB(255, 17, 117, 51), 
+      subtitleColor: Colors.black,
+      background: LottieBuilder.asset('assets/bg.json')
+    ),
+    CardOnBoardData(
+      title: "Problematica", 
+      subtitle: "AEISC es la asociación estudiantil de tu carrera",
+      image: const AssetImage('assets/aeisc.png'), 
+      backgroundColor: const Color.fromARGB(255, 17, 117, 51), 
+      titleColor:  Colors.white,
+      subtitleColor: Colors.black,
+      background: LottieBuilder.asset('assets/circuito2.json')
+    ),
+    CardOnBoardData(
+      title: "Objetivo General", 
+      subtitle: "En estos espacios disfrutarás de tu vida universitaria y aprenderás junto a tus compañeros",
+      image: const AssetImage('assets/campus2.jpg'), 
+      backgroundColor: Colors.white, 
+      titleColor: const Color.fromARGB(255, 27, 57, 106), 
+      subtitleColor: Colors.black,
+      background: LottieBuilder.asset('assets/circuito1.json')
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:
+        ConcentricPageView(
+          colors: data.map((e) => e.backgroundColor).toList(),
+          itemCount: data.length,
+          itemBuilder:(int index){
+            return CardOnBoard(data: data[index]);
+          } ,
+          onFinish: (){
+            Navigator.pushNamed(context, '/perfil');
+          },
+        )
     );
   }
 }

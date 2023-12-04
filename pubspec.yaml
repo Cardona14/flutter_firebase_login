@@ -29,8 +29,9 @@ dependencies:
   flutter_screenutil: ^5.9.0
   salomon_bottom_bar: ^3.3.2
   flutter_localization: ^0.1.14
-  intl: ^0.18.1
+  simple_barcode_scanner: ^0.0.8
   google_maps_flutter: ^2.5.0
+  intl: ^0.18.1
   location: ^5.0.3
   qr_flutter: ^4.1.0
   uuid: ^4.2.1

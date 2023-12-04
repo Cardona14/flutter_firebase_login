@@ -4,16 +4,23 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/rendering.dart';
 
 class GenerateQR extends StatefulWidget {
+  final String id;
+  GenerateQR({required this.id});
+
   @override
-  State<StatefulWidget> createState() => GenerateQRState();
+  State<StatefulWidget> createState() => GenerateQRState(id: id);
 }
 
 class GenerateQRState extends State<GenerateQR> {
+  final String id;
+  GenerateQRState({required this.id});
+
   String qrData =
       "https://github.com/neon97"; // already generated qr code when the page opens
 
   @override
   Widget build(BuildContext context) {
+    print(id);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -36,7 +43,7 @@ class GenerateQRState extends State<GenerateQR> {
           children: <Widget>[
             Center(
               child: QrImageView(
-                data: qrData,
+                data: id,
                 version: QrVersions.auto,
                 embeddedImage: AssetImage("assets/InvitApp_qr.png"),
                 size: 200.0,
